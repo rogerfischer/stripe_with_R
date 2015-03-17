@@ -1,0 +1,18 @@
+---
+title: "Working with Stripe Data and R"
+author: "Roger Fischer"
+date: "March 17, 2015"
+output: html_document
+---
+
+# Working with Stripe Data and R
+
+I recently started working with [R](http://www.r-project.org/ "The R Project for Statistical Computing"). As we use [Stripe](https://stripe.com) as one of our payment providers, I thought it might be interesting to use Stripe's CSV files and R to answer some of the questions every SaaS startup needs to know.
+
+
+## How many new, recurring and lost users do we have per week?
+As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new, recurring we have as well as how many customers we definitely lost.
+
+
+
+
