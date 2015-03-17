@@ -19,6 +19,7 @@ In future posts, I plan to show different aspects like financial data or add vis
 
 ## The CSV file from Stripe
 If you are a Stripe user you can download the payments.csv file directly from [https://dashboard.stripe.com/payments](https://dashboard.stripe.com/payments). 
+Below are the columns, or variables in R speak, available in the CSV file:
 
 ```r
 > names(raw_data)
@@ -45,6 +46,29 @@ If you are a Stripe user you can download the payments.csv file directly from [h
 [41] "Dispute.Evidence.Due..UTC." "Invoice.ID"                
 [43] "Payment.Source.Type"  
 ```
+We will only use a few of them for our purpose, but it's good to see what is available. 
+Besides the payments.csv, there are also CSV files available for customers and for transfers. We may be discuss their respective merit in future posts.
+
+## Installing R and R Studio
+To play with the [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your CSV file, you need however first to [download](http://stat.ethz.ch/CRAN/) and install R. 
+I also highly recommend to use [R Studio](http://www.rstudio.com/products/rstudio/download/). 
+Once you have R Studio (or R on your Terminal/Shell) up and running, choose your working directory and set it in R Studio like this:
+```r
+setwd("your_working_directory")
+```. 
+If you want to check that you are where you want to be, you can use
+```r
+getwd()
+```
+The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your CSV file should be in your working directory if you want to run this "as is".
+
+At the end a new CSV file called "new_recurring_lost.csv"" will be available in your working directory.
+If you dont want to create this CSV file, you can just outcomment the last line:
+```r
+write.table(user_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
+```
+
+
 
 
 
