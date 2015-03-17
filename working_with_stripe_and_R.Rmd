@@ -55,14 +55,14 @@ I also highly recommend to use [R Studio](http://www.rstudio.com/products/rstudi
 Once you have R Studio (or R on your Terminal/Shell) up and running, choose your working directory and set it in R Studio like this:
 ```r
 setwd("your_working_directory")
-```. 
+```
 If you want to check that you are where you want to be, you can use
 ```r
 getwd()
 ```
-The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your CSV file should be in your working directory if you want to run this "as is".
+The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your payments.csv file should be in the same working directory if you want to run this "as is".
 
-At the end a new CSV file called "new_recurring_lost.csv"" will be available in your working directory.
+At the end an additional new CSV file called "new_recurring_lost.csv"" will be available in your working directory. It contains the table with the weekly data.
 If you dont want to create this CSV file, you can just outcomment the last line:
 ```r
 write.table(user_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
