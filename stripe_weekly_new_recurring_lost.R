@@ -1,9 +1,11 @@
 ## By number of payments: stripe_weekly_new_recurring_lost.R
 ## This R script uses the payments.csv file directly imported from Stripe to your working
 ## directory and puts out a table with the number of customers 
-## It can be found at: 
+##
+## The payments.csv file can be exported from Stripe at:
+## https://dashboard.stripe.com/payments
 ## 
-## Will be followed by:
+## This will be followed by:
 ## By amount of payments: stripe_weekly_new_recurring_lost2.R
 
 ## Authors: Roger Fischer, Vitomir Kovanovic
