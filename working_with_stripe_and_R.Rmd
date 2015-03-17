@@ -2,7 +2,6 @@
 title: "Working with Stripe Data and R"
 author: "Roger Fischer"
 date: "March 17, 2015"
-output: html_document
 ---
 
 # Working with Stripe Data and R
@@ -11,7 +10,47 @@ I recently started working with [R](http://www.r-project.org/ "The R Project for
 
 
 ## How many new, recurring and lost users do we have per week?
-As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new, recurring we have as well as how many customers we definitely lost.
+As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we loose per week.
+
+To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers.
+In future posts, I plan to show different aspects like financial data or add visual features like plots. 
+
+
+
+## The CSV file from Stripe
+If you are a Stripe user you can download the payments.csv file directly from [https://dashboard.stripe.com/payments](https://dashboard.stripe.com/payments). 
+
+```r
+> names(raw_data)
+ [1] "id"                         "Description"               
+ [3] "Created..UTC."              "Amount"                    
+ [5] "Amount.Refunded"            "Currency"                  
+ [7] "Converted.Amount"           "Converted.Amount.Refunded" 
+ [9] "Fee"                        "Tax"                       
+[11] "Converted.Currency"         "Mode"                      
+[13] "Status"                     "Statement.Descriptor"      
+[15] "Customer.ID"                "Customer.Description"      
+[17] "Customer.Email"             "Captured"                  
+[19] "Card.ID"                    "Card.Last4"                
+[21] "Card.Brand"                 "Card.Funding"              
+[23] "Card.Exp.Month"             "Card.Exp.Year"             
+[25] "Card.Name"                  "Card.Address.Line1"        
+[27] "Card.Address.Line2"         "Card.Address.City"         
+[29] "Card.Address.State"         "Card.Address.Country"      
+[31] "Card.Address.Zip"           "Card.Issue.Country"        
+[33] "Card.Fingerprint"           "Card.CVC.Status"           
+[35] "Card.AVS.Zip.Status"        "Card.AVS.Line1.Status"     
+[37] "Disputed.Amount"            "Dispute.Status"            
+[39] "Dispute.Reason"             "Dispute.Date..UTC."        
+[41] "Dispute.Evidence.Due..UTC." "Invoice.ID"                
+[43] "Payment.Source.Type"  
+```
+
+
+
+
+
+
 
 
 
