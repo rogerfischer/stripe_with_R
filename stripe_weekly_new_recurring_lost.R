@@ -86,6 +86,11 @@ long_df <- data.frame(cust_types_by_period)
 colnames(long_df) <- c("customer_type", "period", "count")
 
 ## Make a wide format dataframe
-#  install.packages("reshape2")
+## install.packages("reshape2")
 library(reshape2)
-wide_df <- dcast(cust_types_by_period_df, period ~ customer_type, value.var = "count")
+wide_df <- dcast(long_df, period ~ customer_type, value.var = "count")
+
+
+## Check the weekly medians and means overall to compare
+weekly_medians <- apply(wide_df[, 2:4], 2 , median)
+weekly_means <- apply(wide_df[, 2:4], 2 , mean)
