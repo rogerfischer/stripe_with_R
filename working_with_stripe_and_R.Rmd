@@ -10,7 +10,7 @@ I recently started working with [R](http://www.r-project.org/ "The R Project for
 
 
 ## Question: How many new, recurring and lost customers do we have per week?
-As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we loose per week.
+As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we lose per week.
 
 To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers.
 In future posts, I plan to show different aspects like financial data or add visual features like plots. 
@@ -46,7 +46,7 @@ Below are the columns, or variables in R speak, available in the CSV file:
 [43] "Payment.Source.Type"  
 ```
 We will only use a few of them for our purpose, but it's good to see what is available. 
-Besides the payments.csv, there are also CSV files available for customers and for transfers. We may be discuss their respective merit in future posts.
+Besides the payments.csv, there are also CSV files available for customers and for transfers. We may discuss their respective merit in future posts.
 
 ## Installing R and R Studio
 To play with the [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your CSV file, you need however first to [download](http://stat.ethz.ch/CRAN/) and install R. 
@@ -85,22 +85,24 @@ raw_data <- read.csv("payments.csv", stringsAsFactors=FALSE)
 ```
 You can now explore your data. I recommend the following:
 ```r
-dim(raw_data) # Dimension of the data frame, first the rows, then the columns
-str(raw_data) # More information about the structure of your data frame
+dim(raw_data)     # Dimension of the data frame, first the rows, then the columns
+str(raw_data)     # More information about the structure of your data frame
 summary(raw_data) # Gives you a summary by column 
-head(raw_data) # Gives you the first 6 rows
-tail(raw_data) # Gives you the last 6 rows
+head(raw_data)    # Gives you the first 6 rows
+tail(raw_data)    # Gives you the last 6 rows
 
-View(raw_data) # See your data as a table
+View(raw_data)    # See all your data in one big table
 ```
-Every function gives you some information about your data frame respectively about your payments.csv data. With View(raw_data), you see all your data in tabular form. As you now see that there is too much data, we first do some cleanup. 
+Every function gives you some information about your data frame respectively about your payments.csv data. With View(raw_data), you see all your data in tabular form. As there is too much data, we first need to do some cleanup. 
 
 In our [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) the cleaning, subsetting, renaming, changing the type of variables, so we can count, the sorting continues till line 72. If you are interested to see what kind of value is behind a variable name you can always run it. 
 Here is an example:
 ```r
 data$period <- format(data$time,"%y-%U")
 ## Now you want to know what the value of data$period is. Just use:
-head(data$period, 10)
+> head(data$period, 10)
+ [1] "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10"
+
 ## or if you know you don't have tons of data, try to run it directly
 data$period
 ```
@@ -108,7 +110,7 @@ This is a good way to check what the code does. The comments in the R script sho
 
 ## Creating the weekly table of lost, new and recurring customers
 If you have selected and run all the code till line 72, all your objects are now loaded in memory.
-Now we will build our table that you can directly check up in R Studio's console
+Now we will build our table which you can directly check up in R Studio's console
 ```r
 cust_types_by_period <- table(data_f$cust_type, data_f$period)
 cust_types_by_period # Show table in the console
@@ -117,7 +119,7 @@ cust_types_by_period # Show table in the console
 ## Create a new CVS file, called new_recurring_lost.csv
 Create now the CSV file called "new_recurring_lost.csv" with the function write.table. The CSV file  will be available in your working directory. It contains the table with the weekly data we discussed earlier.
 
-If you dont want to create this CSV file, you can just outcomment the last line:
+If you dont want to create this CSV file, you can just outcomment the following:
 ```r
 write.table(user_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
 ```
@@ -150,9 +152,9 @@ If you need the wide format looking like this:
 5  12-47    0  13         0
 6  12-48    0  12        14
 ```
-you can install the [reshape2 package](http://cran.r-project.org/web/packages/reshape2/index.html) and the load it with library(reshape2). Just run this code chunk:
+you can install the [reshape2 package](http://cran.r-project.org/web/packages/reshape2/index.html) and then load it or just run this code chunk:
 ```r
-install.packages("reshape2")
+install.packages("reshape2") # needs only to be installed once
 library(reshape2)
 wide_df <- dcast(long_df, period ~ customer_type, value.var = "count")
 ```
