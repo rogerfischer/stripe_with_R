@@ -62,7 +62,7 @@ data_f$last <- !duplicated(data_f$customer_id, fromLast=TRUE)
 
 ## Recurring, new, lost
 ## By default all transactions are considered being made by existing/recurring customers. New variable "cust_type"
-data_f$cust_type <- "recurring" # TRUE
+data_f$cust_type <- "recurring"
 
 ## If it is the first occurrence, mark it as new (cust_type = new)
 data_f$cust_type[data_f$first] <- "new"
@@ -81,11 +81,11 @@ write.table(cust_types_by_period, file = "new_recurring_lost.csv", row.names = F
 
 
 ## Addendum
-## Keep as long format dataframe for further use
+## Keep as long format data frame for further use
 long_df <- data.frame(cust_types_by_period)
 colnames(long_df) <- c("customer_type", "period", "count")
 
-## Make a wide format dataframe
+## Make a wide format data frame
 ## install.packages("reshape2")
 library(reshape2)
 wide_df <- dcast(long_df, period ~ customer_type, value.var = "count")
