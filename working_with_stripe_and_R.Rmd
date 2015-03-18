@@ -66,12 +66,12 @@ The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_
 ## Running the whole file or by code chunk
 You can run the script entirely and you will then find a cvs file in your working directory called "new_recurring_lost.csv" (which you can import into Excel). This CSV file is bare bones. It starts with the first week of your payments.csv data and ends with the last. 
 Here is an example how it will look:
-
+```
 14-52 | 15-00 | 15-01 | Year and Week       |
 1     | 4     |	4     | Lost Customers      |
 5	    | 11	  | 23    | New Customers       |
 25	  | 53	  | 88    | Recurring Customers |
-
+```
 In the CVS file itself the lost, new, recurring names are missing. 
 I recommend however that you run the code file by code chunks as this is more interesting. And will also give you a better understanding of the data. In R Studio you will see in the top right corner above your R script an icon named Run. If you select your code and click on Run, it will only execute the selected part. So let's start!
 
