@@ -61,20 +61,31 @@ data_f$last <- !duplicated(data_f$customer_id, fromLast=TRUE)
 
 
 ## Recurring, new, lost
-## By default all transactions are considered being made by existing/recurring users. New variable "user_type"
-data_f$user_type <- "recurring" # TRUE
+## By default all transactions are considered being made by existing/recurring customers. New variable "cust_type"
+data_f$cust_type <- "recurring" # TRUE
 
-## If it is the first occurrence, mark it as new (user_type = new)
-data_f$user_type[data_f$first] <- "new"
+## If it is the first occurrence, mark it as new (cust_type = new)
+data_f$cust_type[data_f$first] <- "new"
 
-## When the last transaction by the user fails, we consider to have lost that user (user_type = lost)
-data_f$user_type[data_f$last & data_f$status == "Failed"] <- "lost"
+## When the last transaction by the customer fails, we consider to have lost that customer (cust_type = lost)
+data_f$cust_type[data_f$last & data_f$status == "Failed"] <- "lost"
 
 
 ## Create a table and export to CSV
-## Make a table of the user types per period (= week)
-user_types_by_period <- table(data_f$user_type, data_f$period)
-user_types_by_period # show table
+## Make a table of the customer types by period (= week)
+cust_types_by_period <- table(data_f$cust_type, data_f$period)
+cust_types_by_period # show table
 
 ## Write this table to a new csv file
-write.table(user_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
+write.table(cust_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
+
+
+## Addendum
+## Keep as long format dataframe for further use
+long_df <- data.frame(cust_types_by_period)
+colnames(long_df) <- c("customer_type", "period", "count")
+
+## Make a wide format dataframe
+#  install.packages("reshape2")
+library(reshape2)
+wide_df <- dcast(cust_types_by_period_df, period ~ customer_type, value.var = "count")
