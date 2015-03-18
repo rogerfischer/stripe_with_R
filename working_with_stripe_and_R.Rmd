@@ -171,15 +171,13 @@ With the wide format, you are now able to calculated the mean (or average) and m
 ## Conclusion
 Now you can always download your current payments.cvs and rerun the R script and you have your updated numbers. You will always know how many new, lost or recurring customers you have. And you can compare that to your average or median week. 
 
-Obviously this is just a first attempt to work with the Stripe data and I hope I can improve in any direction. Next up will be the week seen from its financial side. And then probably the first visualization of the data.
+Obviously this is just a first attempt to work with the Stripe data and I plan to improve in any direction. Next up will be the week, seen from its financial side. And then the first visualization of this data.
 
-Many thanks also to [Vitomir Kovanovic](http://blog.kovanovic.info/), who helped me with the R script.
+Many thanks also to [Vitomir Kovanovic](http://blog.kovanovic.info/) who helped me with the R script.
 
 If you have any questions, ideas, improvements, let me know in the comments.
 
 
 
-
-PS: The numbers in the examples are made up.
 
 
