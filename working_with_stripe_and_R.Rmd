@@ -18,7 +18,8 @@ To start I only wanted to have a table that shows the week and below the numbers
 - new: customer appears for the first time
 - lost: last appearance of the customer with a failed payment. Lost doesn't mean he has cancelled.
 - recurring: customers that are neither new nor lost
-Note: Cancelled customers simply dispappear.
+
+**Note**: Cancelled customers simply dispappear. Lost users can reappear as recurring when their payment goes through.
 
 In future posts, I plan to show different aspects like financial data or add visual features like plots. 
 
