@@ -13,6 +13,14 @@ I recently started working with [R](http://www.r-project.org/ "The R Project for
 As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we lose per week.
 
 To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers.
+
+Definitions
+-----------
+new: customer appears for the first time
+lost: last appearance of the customer with a failed payment. Lost doesn't mean he has cancelled.
+recurring: customers that are neither new nor lost
+Note: Cancelled customers simply dispappear.
+
 In future posts, I plan to show different aspects like financial data or add visual features like plots. 
 
 
@@ -177,6 +185,18 @@ With the wide format, you are now able to calculated the mean (or average) and m
 > weekly_medians
      lost       new   recurring 
       3.0      76.0        91.5 
+```
+
+
+## Addendum: Looking at one week only
+If you want to look at a single week, use:
+```r
+## Subset Week 9, 2015
+p1509 <- subset(data_f, data_f$period == "15-09")
+View(p1509)
+## Subset all lost users in Week 9, 2015
+p1509_lost <- subset(data_f, data_f$period == "15-09" & data_f$cust_type == "lost")
+View(p1509_lost)
 ```
 
 ## Conclusion
