@@ -77,7 +77,7 @@ cust_types_by_period <- table(data_f$cust_type, data_f$period)
 cust_types_by_period # show table
 
 ## Write this table to a new csv file
-write.table(cust_types_by_period, file = "new_recurring_lost.csv", row.names = TRUE, sep = "\t")
+write.table(cust_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
 
 
 ## Addendum
