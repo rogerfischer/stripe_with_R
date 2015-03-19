@@ -72,8 +72,10 @@ Here is an example how it will look:
 5     | 11	  | 23    | New Customers       
 25	  | 53	  | 88    | Recurring Customers 
 ```
-In the CVS file itself the names "year and week", "lost", "new", "recurring“ are missing.
-You can always add the row names by checking the documentation about [write.table](https://stat.ethz.ch/R-manual/R-devel/library/utils/html/write.table.html).
+In the CVS file itself the names "year and week", "lost", "new", "recurring“ are missing. This is by convention, as further manipulation of your data could screw up because you named the rows.
+
+So don't write row.names = TRUE as in the documentation about [write.table](https://stat.ethz.ch/R-manual/R-devel/library/utils/html/write.table.html). This will only create a blank column.
+If you absolutely want names, you better transform the table into a wide format data frame (see "wide_df" at the end of the article) and then export this to csv. In the R script, I added the option to create a CSV file with column names, based on "wide_df" too.
 
 I recommend that you run the code file by code chunks as this is more interesting. And will also give you a better understanding of the data. In R Studio you will see in the top right corner above your R script an icon named Run. If you select your code and click on Run, it will only execute the selected part. So let's start!
 
@@ -108,6 +110,7 @@ data$period
 ```
 This is a good way to check what the code does. The comments in the R script should give you enough guidance.
 
+
 ## Creating the weekly table of lost, new and recurring customers
 If you have selected and run all the code till line 72, all your objects are now loaded in memory.
 Now we will build our table which you can directly check up in R Studio's console
@@ -116,6 +119,7 @@ cust_types_by_period <- table(data_f$cust_type, data_f$period)
 cust_types_by_period # Show table in the console
 ```
 
+
 ## Create a new CVS file, called new_recurring_lost.csv
 Create now the CSV file called "new_recurring_lost.csv" with the function write.table. The CSV file  will be available in your working directory. It contains the table with the weekly data we discussed earlier.
 
@@ -123,6 +127,7 @@ If you dont want to create this CSV file, you can just outcomment the following:
 ```r
 write.table(user_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
 ```
+
 
 ## Addendum: Creating data frames in the long and wide format
 If you want to store your table data in a new data frame, you can do this by running 
@@ -158,6 +163,12 @@ install.packages("reshape2") # needs only to be installed once
 library(reshape2)
 wide_df <- dcast(long_df, period ~ customer_type, value.var = "count")
 ```
+If you want the column names in your CSV file, as mentioned above, you could now run the following:
+```r
+write.table(wide_df, file = "wide_df.csv", row.names = FALSE , col.names = TRUE, sep = "\t")
+```
+Now the first line uses your columns names: period, lost, new, recurring.
+
 
 ## Addendum: Mean and Media for all weeks
 With the wide format, you are now able to calculated the mean (or average) and median (or middle value) over all your weeks for lost, new and recurring customers. If you have a lot of outliers in your data, I recommend to use the median over the mean.

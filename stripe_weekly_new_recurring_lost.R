@@ -77,7 +77,7 @@ cust_types_by_period <- table(data_f$cust_type, data_f$period)
 cust_types_by_period # show table
 
 ## Write this table to a new csv file
-write.table(cust_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
+write.table(cust_types_by_period, file = "new_recurring_lost.csv", row.names = TRUE, sep = "\t")
 
 
 ## Addendum
@@ -89,6 +89,9 @@ colnames(long_df) <- c("customer_type", "period", "count")
 ## install.packages("reshape2")
 library(reshape2)
 wide_df <- dcast(long_df, period ~ customer_type, value.var = "count")
+
+## Optional: Write wide_df to a CSV file with column names
+## write.table(wide_df, file = "wide_df.csv", row.names = FALSE , col.names = TRUE, sep = "\t")
 
 
 ## Check the weekly medians and means overall to compare
