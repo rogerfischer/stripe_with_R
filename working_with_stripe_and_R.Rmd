@@ -12,7 +12,7 @@ I recently started working with [R](http://www.r-project.org/ "The R Project for
 ## Question: How many new, recurring and lost customers do we have per week?
 As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we lose per week.
 
-To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers ^[1].
+To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers [1].
 
 In future posts, I plan to show different aspects like financial data or add visual features like plots. 
 
@@ -202,7 +202,8 @@ Many thanks also to [Vitomir Kovanovic](http://blog.kovanovic.info/) who helped 
 If you have any questions, ideas, improvements, let me know in the comments.
 
 
-^[1]:
+
+[1]:
 ### Definitions
 - new: customer appears for the first time
 - lost: last appearance of the customer with a failed payment. Lost doesn't mean the customer has cancelled.
