@@ -203,8 +203,7 @@ If you have any questions, ideas, improvements, let me know in the comments.
 
 
 
-[1]:
-### Definitions
+[1]: Definitions
 - new: customer appears for the first time
 - lost: last appearance of the customer with a failed payment. Lost doesn't mean the customer has cancelled.
 - recurring: customers that are neither new nor lost
