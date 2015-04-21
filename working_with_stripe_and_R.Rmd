@@ -65,7 +65,8 @@ If you want to check that you are where you want to be, you can use
 ```r
 getwd()
 ```
-The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your payments.csv file should be in the same working directory if you want to run this "as is".
+The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your payments.csv file should be in the same working directory if you want to run this "as is". 
+
 If you don't use Github yet, you can always copy the [script's](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) content and import it in a file named "stripe_weekly_new_recurring_lost.R". Any text editor (Sublime, R Studio) will be fine for this task. 
     
        
