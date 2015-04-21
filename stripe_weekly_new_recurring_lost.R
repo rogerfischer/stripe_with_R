@@ -33,7 +33,9 @@ data$time <- strptime(data$time_string, format="%Y-%m-%d %H:%M")
 ## %U
 ## Week of the year as decimal number (00–53) using Sunday as the first day 1 of the week (and typically with the first 
 ## Sunday of the year as day 1 of week 1). The US convention.
-data$period <- format(data$time,"%y-%U")
+data$period <- format(data$time,"%y-%U") # By weeks
+## Month as decimal number, otherwise use %b or %B
+## data$period <- format(data$time,"%y-%m") 
 
 ## First remove the "," from numbers, then convert amounts from characters to numbers. 
 data$amount <- as.numeric(as.character(gsub(',', '', data$amount)))
@@ -69,6 +71,7 @@ data_f$cust_type[data_f$first] <- "new"
 
 ## When the last transaction by the customer fails, we consider to have lost that customer (cust_type = lost)
 data_f$cust_type[data_f$last & data_f$status == "Failed"] <- "lost"
+# data_f$cust_type[data_f$status == "Failed"] <- "failed"
 
 
 ## Create a table and export to CSV
