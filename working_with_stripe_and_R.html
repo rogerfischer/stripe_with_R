@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Working with Stripe Data and R</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>Working with Stripe Data and R</h1>
+
+<p>I recently started working with <a href="http://www.r-project.org/" title="The R Project for Statistical Computing">R</a>. As we use <a href="https://stripe.com">Stripe</a> as one of our payment providers, I thought it might be interesting to use Stripe&#39;s CSV files and R to answer some of the questions every SaaS startup needs to know.</p>
+
+<h2>Question: How many new, recurring and lost customers do we have per week?</h2>
+
+<p>As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we lose per week.</p>
+
+<p>To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers [1].</p>
+
+<p>In future posts, I plan to show different aspects like financial data or add visual features like plots. </p>
+
+<h2>The CSV file from Stripe</h2>
+
+<p>If you are a Stripe user you can download the payments.csv file directly from <a href="https://dashboard.stripe.com/payments">https://dashboard.stripe.com/payments</a>. 
+Below are the columns, or variables in R speak, available in the CSV file:</p>
+
+<pre><code class="r">&gt; names(raw_data)
+ [1] &quot;id&quot;                         &quot;Description&quot;               
+ [3] &quot;Created..UTC.&quot;              &quot;Amount&quot;                    
+ [5] &quot;Amount.Refunded&quot;            &quot;Currency&quot;                  
+ [7] &quot;Converted.Amount&quot;           &quot;Converted.Amount.Refunded&quot; 
+ [9] &quot;Fee&quot;                        &quot;Tax&quot;                       
+[11] &quot;Converted.Currency&quot;         &quot;Mode&quot;                      
+[13] &quot;Status&quot;                     &quot;Statement.Descriptor&quot;      
+[15] &quot;Customer.ID&quot;                &quot;Customer.Description&quot;      
+[17] &quot;Customer.Email&quot;             &quot;Captured&quot;                  
+[19] &quot;Card.ID&quot;                    &quot;Card.Last4&quot;                
+[21] &quot;Card.Brand&quot;                 &quot;Card.Funding&quot;              
+[23] &quot;Card.Exp.Month&quot;             &quot;Card.Exp.Year&quot;             
+[25] &quot;Card.Name&quot;                  &quot;Card.Address.Line1&quot;        
+[27] &quot;Card.Address.Line2&quot;         &quot;Card.Address.City&quot;         
+[29] &quot;Card.Address.State&quot;         &quot;Card.Address.Country&quot;      
+[31] &quot;Card.Address.Zip&quot;           &quot;Card.Issue.Country&quot;        
+[33] &quot;Card.Fingerprint&quot;           &quot;Card.CVC.Status&quot;           
+[35] &quot;Card.AVS.Zip.Status&quot;        &quot;Card.AVS.Line1.Status&quot;     
+[37] &quot;Disputed.Amount&quot;            &quot;Dispute.Status&quot;            
+[39] &quot;Dispute.Reason&quot;             &quot;Dispute.Date..UTC.&quot;        
+[41] &quot;Dispute.Evidence.Due..UTC.&quot; &quot;Invoice.ID&quot;                
+[43] &quot;Payment.Source.Type&quot;  
+</code></pre>
+
+<p>We will only use a few of them for our purpose, but it&#39;s good to see what is available. 
+Besides the payments.csv, there are also CSV files available for customers and for transfers. We may discuss their respective merit in future posts.</p>
+
+<h2>Installing R and R Studio</h2>
+
+<p>To play with the <a href="https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R">R script</a> and your CSV file, you need, however, first to <a href="http://stat.ethz.ch/CRAN/">download</a> and install R. 
+I also highly recommend to use <a href="http://www.rstudio.com/products/rstudio/download/">R Studio</a>.</p>
+
+<h2>Setting your Working Directory</h2>
+
+<p>Once you have R Studio (or R on your Terminal/Shell) up and running, choose your working directory and set it in R Studio like this:</p>
+
+<pre><code class="r">## &quot;your_working_directory&quot; is a path like &quot;/Users/rogerfischer/R/kaywa/stripe_with_R&quot;
+setwd(&quot;your_working_directory&quot;)
+</code></pre>
+
+<p>If you want to check that you are where you want to be, you can use</p>
+
+<pre><code class="r">getwd()
+</code></pre>
+
+<p>The <a href="https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R">R script</a> and your payments.csv file should be in the same working directory if you want to run this &ldquo;as is&rdquo;. </p>
+
+<p>If you don&#39;t use Github yet, you can always copy the <a href="https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R">script&#39;s</a> content and import it in a file named &ldquo;stripe_weekly_new_recurring_lost.R&rdquo;. Any text editor (Sublime, R Studio) will be fine for this task. </p>
+
+<h2>Running the whole R script or run by code chunk</h2>
+
+<p>You can run the script entirely and you will then find a cvs file in your working directory called &ldquo;new_recurring_lost.csv&rdquo; (which you can import into Excel). This CSV file is bare bones. It starts with the first week of your payments.csv data and ends with the last. 
+Here is an example how it will look:</p>
+
+<pre><code>14-52 | 15-00 | 15-01 | Year and Week, 14-52 = Week 52, 2014 (Weeks start Sunday, US notation)      
+1     | 4     | 4     | Lost Customers      
+5     | 11    | 23    | New Customers       
+25    | 53    | 88    | Recurring Customers 
+</code></pre>
+
+<p>In the CVS file itself the names &ldquo;year and week&rdquo;, &ldquo;lost&rdquo;, &ldquo;new&rdquo;, &ldquo;recurring“ are missing. This is by convention, as further manipulation of your data could screw up because you named the rows.</p>
+
+<p>So don&#39;t write row.names = TRUE as in the documentation about <a href="https://stat.ethz.ch/R-manual/R-devel/library/utils/html/write.table.html">write.table</a>. This will only create a blank column.
+If you absolutely want names, you better transform the table into a wide format data frame (see &quot;wide_df&rdquo; at the end of the article) and then export this to csv. In the R script, I added the option to create a CSV file with column names, based on &ldquo;wide_df&rdquo; too.</p>
+
+<p>I recommend that you run the code file by code chunks as this is more interesting. And will also give you a better understanding of the data. In R Studio you will see in the top right corner above your R script an icon named Run. If you select your code and click on Run, it will only execute the selected part. So let&#39;s start!</p>
+
+<h2>Loading the Data with read.cvs</h2>
+
+<p>At first we load the data into an R object, called a data frame, with this command:</p>
+
+<pre><code class="r">raw_data &lt;- read.csv(&quot;payments.csv&quot;, stringsAsFactors=FALSE)
+</code></pre>
+
+<p>You can now explore your data. I recommend the following:</p>
+
+<pre><code class="r">dim(raw_data)     # Dimension of the data frame, first the rows, then the columns
+str(raw_data)     # More information about the structure of your data frame
+summary(raw_data) # Gives you a summary by column 
+head(raw_data)    # Gives you the first 6 rows
+tail(raw_data)    # Gives you the last 6 rows
+
+View(raw_data)    # See all your data in one big table
+</code></pre>
+
+<p>Every function gives you some information about your data frame respectively about your payments.csv data. With View(raw_data), you see all your data in tabular form. As there is too much data, we first need to do some cleanup. </p>
+
+<p>In our <a href="https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R">R script</a> the cleaning, subsetting, renaming, changing the type of variables, so we can count, the sorting continues till line 72. If you are interested to see what kind of value is behind a variable name you can always run it. 
+Here is an example:</p>
+
+<pre><code class="r">data$period &lt;- format(data$time,&quot;%y-%U&quot;)
+## Now you want to know what the value of data$period is. Just use:
+&gt; head(data$period, 10)
+ [1] &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot; &quot;15-10&quot;
+
+## or if you know you don&#39;t have tons of data, try to run it directly
+data$period
+</code></pre>
+
+<p>This is a good way to check what the code does. The comments in the R script should give you enough guidance.</p>
+
+<h2>Creating the weekly table of lost, new and recurring customers</h2>
+
+<p>If you have selected and run all the code till line 72, all your objects are now loaded in memory.
+Now we will build our table which you can directly check up in R Studio&#39;s console</p>
+
+<pre><code class="r">cust_types_by_period &lt;- table(data_f$cust_type, data_f$period)
+
+## Show table in the console
+cust_types_by_period 
+</code></pre>
+
+<h2>Create a new CVS file, called new_recurring_lost.csv</h2>
+
+<p>Create now the CSV file called &ldquo;new_recurring_lost.csv&rdquo; with the function write.table. The CSV file  will be available in your working directory. It contains the table with the weekly data we discussed earlier.</p>
+
+<p>If you don&#39;t want to create this CSV file, you can just outcomment the following:</p>
+
+<pre><code class="r">write.table(user_types_by_period, file = &quot;new_recurring_lost.csv&quot;, row.names = FALSE, sep = &quot;\t&quot;)
+</code></pre>
+
+<h2>Addendum: Months instead of weeks as data period</h2>
+
+<p>If you want to look at months rather than weeks, you can just change the format of the data$period. 
+Instead of</p>
+
+<pre><code class="r">## By weeks
+## data$period &lt;- format(data$time,&quot;%y-%U&quot;) 
+</code></pre>
+
+<p>use</p>
+
+<pre><code class="r">## Month as decimal number, otherwise use %b or %B
+data$period &lt;- format(data$time,&quot;%y-%m&quot;) 
+</code></pre>
+
+<h2>Addendum: Creating data frames in the long and wide format</h2>
+
+<p>If you want to store your table data in a new data frame, you can do this by running </p>
+
+<pre><code class="r">long_df &lt;- data.frame(cust_types_by_period)
+colnames(long_df) &lt;- c(&quot;customer_type&quot;, &quot;period&quot;, &quot;count&quot;)
+</code></pre>
+
+<p>You can see the long format below:</p>
+
+<pre><code class="r">&gt; head(long_df)
+  customer_type period count
+1          lost  12-43     1
+2           new  12-43     4
+3     recurring  12-43     1
+4          lost  12-44     6
+5           new  12-44    17
+6     recurring  12-44     1
+</code></pre>
+
+<p>If you need the wide format looking like this:</p>
+
+<pre><code class="r">&gt; head(wide_df)
+  period lost new recurring
+1  12-43    1   4         1
+2  12-44    6  17         1
+3  12-45    0  24         1
+4  12-46    2  23         1
+5  12-47    0  13         0
+6  12-48    0  12        14
+</code></pre>
+
+<p>you can install the <a href="http://cran.r-project.org/web/packages/reshape2/index.html">reshape2 package</a> and then load it or just run this code chunk:</p>
+
+<pre><code class="r">install.packages(&quot;reshape2&quot;) # needs only to be installed once
+library(reshape2)
+wide_df &lt;- dcast(long_df, period ~ customer_type, value.var = &quot;count&quot;)
+</code></pre>
+
+<p>If you want the column names in your CSV file, as mentioned above, you could now run the following:</p>
+
+<pre><code class="r">write.table(wide_df, file = &quot;wide_df.csv&quot;, row.names = FALSE , col.names = TRUE, sep = &quot;\t&quot;)
+</code></pre>
+
+<p>Now the first line uses your columns names: period, lost, new, recurring.</p>
+
+<h2>Addendum: Mean and Media for all weeks</h2>
+
+<p>With the wide format, you are now able to calculate the mean (or average) and median (or middle value) over all your weeks for lost, new and recurring customers. If you have a lot of outliers in your data, I recommend using the median over the mean.</p>
+
+<pre><code class="r">&gt; weekly_medians &lt;- apply(wide_df[, 2:4], 2 , median)
+&gt; weekly_medians
+     lost       new   recurring 
+      3.0      76.0        91.5 
+</code></pre>
+
+<h2>Addendum: Looking at one week only</h2>
+
+<p>If you want to look at a single week, use:</p>
+
+<pre><code class="r">## Subset Week 9, 2015
+p1509 &lt;- subset(data_f, data_f$period == &quot;15-09&quot;)
+View(p1509)
+## Subset all lost users in Week 9, 2015
+p1509_lost &lt;- subset(data_f, data_f$period == &quot;15-09&quot; &amp; data_f$cust_type == &quot;lost&quot;)
+View(p1509_lost)
+</code></pre>
+
+<h2>Conclusion</h2>
+
+<p>Now you can always download your current payments.cvs and rerun the R script and you have your updated numbers. You will always know how many new, lost or recurring customers you have. And you can compare that to your average or median week. </p>
+
+<p>Obviously this is just a first attempt to work with the Stripe data and I plan to improve in any direction. Next up will be the week, seen from its financial side. And then the first visualization of this data.</p>
+
+<p>Many thanks also to <a href="http://blog.kovanovic.info/">Vitomir Kovanovic</a> who helped me with the R script.</p>
+
+<p>If you have any questions, ideas, improvements, let me know in the comments.</p>
+
+<hr/>
+
+<p>[1]
+<strong>Definitions</strong>   </p>
+
+<ul>
+<li>new: customer appears for the first time</li>
+<li>lost: last appearance of the customer with a failed payment. Lost doesn&#39;t mean the customer has cancelled.</li>
+<li>recurring: customers that are neither new nor lost</li>
+</ul>
+
+<p><strong>Note</strong>: Customers who cancel simply dispappear. 
+Customers that are lost can reappear as recurring in the following week when their payment goes through. It makes a lot of sense to check these lost customers in detail.</p>
+
+<p>So far I didn&#39;t find cancelled customers in the CSV files from Stripe. Although there is a column called &ldquo;Cancel.At.Period.End&rdquo; in the customer.cvs with the values &ldquo;false&rdquo; or &ldquo;true&rdquo;, it wasn&#39;t always consistent with our own internal data. 
+So I will contact Stripe and keep you updated about this.</p>
+
+</body>
+
+</html>

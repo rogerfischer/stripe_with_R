@@ -1,0 +1,242 @@
+---
+title: "Working with Stripe Data and R"
+author: "Roger Fischer"
+date: "March 17, 2015"
+---
+
+# Working with Stripe Data and R   
+
+I recently started working with [R](http://www.r-project.org/ "The R Project for Statistical Computing"). As we use [Stripe](https://stripe.com) as one of our payment providers, I thought it might be interesting to use Stripe's CSV files and R to answer some of the questions every SaaS startup needs to know.
+
+       
+## Question: How many new, recurring and lost customers do we have per week?   
+As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we lose per week.
+
+To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers [1].
+
+In future posts, I plan to show different aspects like financial data or add visual features like plots. 
+      
+
+## The CSV file from Stripe   
+If you are a Stripe user you can download the payments.csv file directly from [https://dashboard.stripe.com/payments](https://dashboard.stripe.com/payments). 
+Below are the columns, or variables in R speak, available in the CSV file:
+
+```r
+> names(raw_data)
+ [1] "id"                         "Description"               
+ [3] "Created..UTC."              "Amount"                    
+ [5] "Amount.Refunded"            "Currency"                  
+ [7] "Converted.Amount"           "Converted.Amount.Refunded" 
+ [9] "Fee"                        "Tax"                       
+[11] "Converted.Currency"         "Mode"                      
+[13] "Status"                     "Statement.Descriptor"      
+[15] "Customer.ID"                "Customer.Description"      
+[17] "Customer.Email"             "Captured"                  
+[19] "Card.ID"                    "Card.Last4"                
+[21] "Card.Brand"                 "Card.Funding"              
+[23] "Card.Exp.Month"             "Card.Exp.Year"             
+[25] "Card.Name"                  "Card.Address.Line1"        
+[27] "Card.Address.Line2"         "Card.Address.City"         
+[29] "Card.Address.State"         "Card.Address.Country"      
+[31] "Card.Address.Zip"           "Card.Issue.Country"        
+[33] "Card.Fingerprint"           "Card.CVC.Status"           
+[35] "Card.AVS.Zip.Status"        "Card.AVS.Line1.Status"     
+[37] "Disputed.Amount"            "Dispute.Status"            
+[39] "Dispute.Reason"             "Dispute.Date..UTC."        
+[41] "Dispute.Evidence.Due..UTC." "Invoice.ID"                
+[43] "Payment.Source.Type"  
+```
+We will only use a few of them for our purpose, but it's good to see what is available. 
+Besides the payments.csv, there are also CSV files available for customers and for transfers. We may discuss their respective merit in future posts.
+
+      
+## Installing R and R Studio   
+To play with the [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your CSV file, you need, however, first to [download](http://stat.ethz.ch/CRAN/) and install R. 
+I also highly recommend to use [R Studio](http://www.rstudio.com/products/rstudio/download/).
+     
+     
+## Setting your Working Directory   
+Once you have R Studio (or R on your Terminal/Shell) up and running, choose your working directory and set it in R Studio like this:
+```r
+## "your_working_directory" is a path like "/Users/rogerfischer/R/kaywa/stripe_with_R"
+setwd("your_working_directory")
+```
+If you want to check that you are where you want to be, you can use
+```r
+getwd()
+```
+The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your payments.csv file should be in the same working directory if you want to run this "as is". 
+
+If you don't use Github yet, you can always copy the [script's](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) content and import it in a file named "stripe_weekly_new_recurring_lost.R". Any text editor (Sublime, R Studio) will be fine for this task. 
+    
+       
+## Running the whole R script or run by code chunk   
+You can run the script entirely and you will then find a cvs file in your working directory called "new_recurring_lost.csv" (which you can import into Excel). This CSV file is bare bones. It starts with the first week of your payments.csv data and ends with the last. 
+Here is an example how it will look:
+```
+14-52 | 15-00 | 15-01 | Year and Week, 14-52 = Week 52, 2014 (Weeks start Sunday, US notation)      
+1     | 4     |	4     | Lost Customers      
+5     | 11	  | 23    | New Customers       
+25	  | 53	  | 88    | Recurring Customers 
+```
+In the CVS file itself the names "year and week", "lost", "new", "recurring“ are missing. This is by convention, as further manipulation of your data could screw up because you named the rows.
+
+So don't write row.names = TRUE as in the documentation about [write.table](https://stat.ethz.ch/R-manual/R-devel/library/utils/html/write.table.html). This will only create a blank column.
+If you absolutely want names, you better transform the table into a wide format data frame (see "wide_df" at the end of the article) and then export this to csv. In the R script, I added the option to create a CSV file with column names, based on "wide_df" too.
+
+I recommend that you run the code file by code chunks as this is more interesting. And will also give you a better understanding of the data. In R Studio you will see in the top right corner above your R script an icon named Run. If you select your code and click on Run, it will only execute the selected part. So let's start!
+
+    
+## Loading the Data with read.cvs    
+At first we load the data into an R object, called a data frame, with this command:
+```r
+raw_data <- read.csv("payments.csv", stringsAsFactors=FALSE)
+```
+You can now explore your data. I recommend the following:
+```r
+dim(raw_data)     # Dimension of the data frame, first the rows, then the columns
+str(raw_data)     # More information about the structure of your data frame
+summary(raw_data) # Gives you a summary by column 
+head(raw_data)    # Gives you the first 6 rows
+tail(raw_data)    # Gives you the last 6 rows
+
+View(raw_data)    # See all your data in one big table
+```
+Every function gives you some information about your data frame respectively about your payments.csv data. With View(raw_data), you see all your data in tabular form. As there is too much data, we first need to do some cleanup. 
+
+In our [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) the cleaning, subsetting, renaming, changing the type of variables, so we can count, the sorting continues till line 72. If you are interested to see what kind of value is behind a variable name you can always run it. 
+Here is an example:
+```r
+data$period <- format(data$time,"%y-%U")
+## Now you want to know what the value of data$period is. Just use:
+> head(data$period, 10)
+ [1] "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10" "15-10"
+
+## or if you know you don't have tons of data, try to run it directly
+data$period
+```
+This is a good way to check what the code does. The comments in the R script should give you enough guidance.
+
+    
+## Creating the weekly table of lost, new and recurring customers   
+If you have selected and run all the code till line 72, all your objects are now loaded in memory.
+Now we will build our table which you can directly check up in R Studio's console
+```r
+cust_types_by_period <- table(data_f$cust_type, data_f$period)
+
+## Show table in the console
+cust_types_by_period 
+```
+
+    
+## Create a new CVS file, called new_recurring_lost.csv   
+Create now the CSV file called "new_recurring_lost.csv" with the function write.table. The CSV file  will be available in your working directory. It contains the table with the weekly data we discussed earlier.
+
+If you don't want to create this CSV file, you can just outcomment the following:
+```r
+write.table(user_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
+```
+
+## Addendum: Months instead of weeks as data period
+If you want to look at months rather than weeks, you can just change the format of the data$period. 
+Instead of
+```r
+## By weeks
+## data$period <- format(data$time,"%y-%U") 
+```
+use
+```r
+## Month as decimal number, otherwise use %b or %B
+data$period <- format(data$time,"%y-%m") 
+```
+     
+     
+## Addendum: Creating data frames in the long and wide format   
+If you want to store your table data in a new data frame, you can do this by running 
+```r
+long_df <- data.frame(cust_types_by_period)
+colnames(long_df) <- c("customer_type", "period", "count")
+```
+You can see the long format below:
+```r
+> head(long_df)
+  customer_type period count
+1          lost  12-43     1
+2           new  12-43     4
+3     recurring  12-43     1
+4          lost  12-44     6
+5           new  12-44    17
+6     recurring  12-44     1
+```
+If you need the wide format looking like this:
+```r
+> head(wide_df)
+  period lost new recurring
+1  12-43    1   4         1
+2  12-44    6  17         1
+3  12-45    0  24         1
+4  12-46    2  23         1
+5  12-47    0  13         0
+6  12-48    0  12        14
+```
+you can install the [reshape2 package](http://cran.r-project.org/web/packages/reshape2/index.html) and then load it or just run this code chunk:
+```r
+install.packages("reshape2") # needs only to be installed once
+library(reshape2)
+wide_df <- dcast(long_df, period ~ customer_type, value.var = "count")
+```
+If you want the column names in your CSV file, as mentioned above, you could now run the following:
+```r
+write.table(wide_df, file = "wide_df.csv", row.names = FALSE , col.names = TRUE, sep = "\t")
+```
+Now the first line uses your columns names: period, lost, new, recurring.
+
+   
+## Addendum: Mean and Media for all weeks   
+With the wide format, you are now able to calculate the mean (or average) and median (or middle value) over all your weeks for lost, new and recurring customers. If you have a lot of outliers in your data, I recommend using the median over the mean.
+```r
+> weekly_medians <- apply(wide_df[, 2:4], 2 , median)
+> weekly_medians
+     lost       new   recurring 
+      3.0      76.0        91.5 
+```
+
+   
+## Addendum: Looking at one week only   
+If you want to look at a single week, use:
+```r
+## Subset Week 9, 2015
+p1509 <- subset(data_f, data_f$period == "15-09")
+View(p1509)
+## Subset all lost users in Week 9, 2015
+p1509_lost <- subset(data_f, data_f$period == "15-09" & data_f$cust_type == "lost")
+View(p1509_lost)
+```
+
+## Conclusion   
+Now you can always download your current payments.cvs and rerun the R script and you have your updated numbers. You will always know how many new, lost or recurring customers you have. And you can compare that to your average or median week. 
+
+Obviously this is just a first attempt to work with the Stripe data and I plan to improve in any direction. Next up will be the week, seen from its financial side. And then the first visualization of this data.
+
+Many thanks also to [Vitomir Kovanovic](http://blog.kovanovic.info/) who helped me with the R script.
+
+If you have any questions, ideas, improvements, let me know in the comments.
+
+
+----   
+[1]
+**Definitions**   
+- new: customer appears for the first time
+- lost: last appearance of the customer with a failed payment. Lost doesn't mean the customer has cancelled.
+- recurring: customers that are neither new nor lost
+
+    
+**Note**: Customers who cancel simply dispappear. 
+Customers that are lost can reappear as recurring in the following week when their payment goes through. It makes a lot of sense to check these lost customers in detail.
+
+So far I didn't find cancelled customers in the CSV files from Stripe. Although there is a column called "Cancel.At.Period.End" in the customer.cvs with the values "false" or "true", it wasn't always consistent with our own internal data. 
+So I will contact Stripe and keep you updated about this.
+
+
+
+
