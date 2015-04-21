@@ -58,6 +58,7 @@ I also highly recommend to use [R Studio](http://www.rstudio.com/products/rstudi
 ## Setting your Working Directory   
 Once you have R Studio (or R on your Terminal/Shell) up and running, choose your working directory and set it in R Studio like this:
 ```r
+## "your_working_directory" is a path like "/Users/rogerfischer/R/kaywa/stripe_with_R"
 setwd("your_working_directory")
 ```
 If you want to check that you are where you want to be, you can use
@@ -65,8 +66,9 @@ If you want to check that you are where you want to be, you can use
 getwd()
 ```
 The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your payments.csv file should be in the same working directory if you want to run this "as is".
+If you don't use Github yet, you can always copy the [script's](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) content and import it in a file named "stripe_weekly_new_recurring_lost.R". Any text editor (Sublime, R Studio) will be fine for this task. 
     
-    
+       
 ## Running the whole R script or run by code chunk   
 You can run the script entirely and you will then find a cvs file in your working directory called "new_recurring_lost.csv" (which you can import into Excel). This CSV file is bare bones. It starts with the first week of your payments.csv data and ends with the last. 
 Here is an example how it will look:
