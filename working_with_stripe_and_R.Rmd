@@ -8,14 +8,14 @@ date: "March 17, 2015"
 
 I recently started working with [R](http://www.r-project.org/ "The R Project for Statistical Computing"). As we use [Stripe](https://stripe.com) as one of our payment providers, I thought it might be interesting to use Stripe's CSV files and R to answer some of the questions every SaaS startup needs to know.
 
-
+       
 ## Question: How many new, recurring and lost customers do we have per week?   
 As we have a weekly meeting where we discuss our numbers, it would be best to get the numbers per week. So I decided to start with the question of how many new and recurring customer we have, as well as how many customers we lose per week.
 
 To start I only wanted to have a table that shows the week and below the numbers for lost, new and recurring customers [1].
 
 In future posts, I plan to show different aspects like financial data or add visual features like plots. 
-
+      
 
 ## The CSV file from Stripe   
 If you are a Stripe user you can download the payments.csv file directly from [https://dashboard.stripe.com/payments](https://dashboard.stripe.com/payments). 
@@ -49,10 +49,12 @@ Below are the columns, or variables in R speak, available in the CSV file:
 We will only use a few of them for our purpose, but it's good to see what is available. 
 Besides the payments.csv, there are also CSV files available for customers and for transfers. We may discuss their respective merit in future posts.
 
+      
 ## Installing R and R Studio   
-To play with the [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your CSV file, you need however first to [download](http://stat.ethz.ch/CRAN/) and install R. 
+To play with the [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your CSV file, you need, however, first to [download](http://stat.ethz.ch/CRAN/) and install R. 
 I also highly recommend to use [R Studio](http://www.rstudio.com/products/rstudio/download/).
-
+     
+     
 ## Setting your Working Directory   
 Once you have R Studio (or R on your Terminal/Shell) up and running, choose your working directory and set it in R Studio like this:
 ```r
@@ -63,7 +65,8 @@ If you want to check that you are where you want to be, you can use
 getwd()
 ```
 The [R script](https://github.com/rogerfischer/stripe_with_R/blob/master/stripe_weekly_new_recurring_lost.R) and your payments.csv file should be in the same working directory if you want to run this "as is".
-
+    
+    
 ## Running the whole R script or run by code chunk   
 You can run the script entirely and you will then find a cvs file in your working directory called "new_recurring_lost.csv" (which you can import into Excel). This CSV file is bare bones. It starts with the first week of your payments.csv data and ends with the last. 
 Here is an example how it will look:
@@ -80,7 +83,7 @@ If you absolutely want names, you better transform the table into a wide format 
 
 I recommend that you run the code file by code chunks as this is more interesting. And will also give you a better understanding of the data. In R Studio you will see in the top right corner above your R script an icon named Run. If you select your code and click on Run, it will only execute the selected part. So let's start!
 
-
+    
 ## Loading the Data with read.cvs    
 At first we load the data into an R object, called a data frame, with this command:
 ```r
@@ -111,25 +114,40 @@ data$period
 ```
 This is a good way to check what the code does. The comments in the R script should give you enough guidance.
 
-
+    
 ## Creating the weekly table of lost, new and recurring customers   
 If you have selected and run all the code till line 72, all your objects are now loaded in memory.
 Now we will build our table which you can directly check up in R Studio's console
 ```r
 cust_types_by_period <- table(data_f$cust_type, data_f$period)
-cust_types_by_period # Show table in the console
+
+## Show table in the console
+cust_types_by_period 
 ```
 
-
+    
 ## Create a new CVS file, called new_recurring_lost.csv   
 Create now the CSV file called "new_recurring_lost.csv" with the function write.table. The CSV file  will be available in your working directory. It contains the table with the weekly data we discussed earlier.
 
-If you dont want to create this CSV file, you can just outcomment the following:
+If you don't want to create this CSV file, you can just outcomment the following:
 ```r
 write.table(user_types_by_period, file = "new_recurring_lost.csv", row.names = FALSE, sep = "\t")
 ```
 
-
+## Addendum: Months instead of weeks as data period
+If you want to look at months rather than weeks, you can just change the format of the data$period. 
+Instead of
+```r
+## By weeks
+## data$period <- format(data$time,"%y-%U") 
+```
+use
+```r
+## Month as decimal number, otherwise use %b or %B
+data$period <- format(data$time,"%y-%m") 
+```
+     
+     
 ## Addendum: Creating data frames in the long and wide format   
 If you want to store your table data in a new data frame, you can do this by running 
 ```r
@@ -170,9 +188,9 @@ write.table(wide_df, file = "wide_df.csv", row.names = FALSE , col.names = TRUE,
 ```
 Now the first line uses your columns names: period, lost, new, recurring.
 
-
+   
 ## Addendum: Mean and Media for all weeks   
-With the wide format, you are now able to calculated the mean (or average) and median (or middle value) over all your weeks for lost, new and recurring customers. If you have a lot of outliers in your data, I recommend to use the median over the mean.
+With the wide format, you are now able to calculate the mean (or average) and median (or middle value) over all your weeks for lost, new and recurring customers. If you have a lot of outliers in your data, I recommend using the median over the mean.
 ```r
 > weekly_medians <- apply(wide_df[, 2:4], 2 , median)
 > weekly_medians
@@ -180,7 +198,7 @@ With the wide format, you are now able to calculated the mean (or average) and m
       3.0      76.0        91.5 
 ```
 
-
+   
 ## Addendum: Looking at one week only   
 If you want to look at a single week, use:
 ```r
