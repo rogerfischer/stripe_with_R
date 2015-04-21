@@ -198,7 +198,7 @@ With the wide format, you are now able to calculate the mean (or average) and me
 > weekly_medians <- apply(wide_df[, 2:4], 2 , median)
 > weekly_medians
      lost       new   recurring 
-      3.0      76.0        91.5 
+      3.0      76.0        91.0 
 ```
 
    
